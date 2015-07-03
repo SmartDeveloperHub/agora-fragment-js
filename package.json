@@ -1,0 +1,21 @@
+{
+  "name": "AGORA-SDH-GATE",
+  "version": "0.0.1",
+  "description": "get JSON from gp using AGORA SDH",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SmartDeveloperHub/sdh-gate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SmartDeveloperHub/sdh-gate/issues",
+    "email": "carlos.blanco@centeropenmiddleware.com"
+  },
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "rdfstore": "*",
+    "sparqljs": "^1.1.2",
+    "sync-request": "^2.0.1"
+  }
+}
