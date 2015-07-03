@@ -174,8 +174,6 @@ exports.get_results_from_fragment = function get_results_from_fragment(fg, q, ca
  };*/
 
 exports.get_parsed_result = function get_parsed_result(f,q,retCall) {
-    console.log(q);
-    console.log(f);
     this.get_results_from_fragment(f, q, function(e) {
         parseTree(e, retCall);
     });
