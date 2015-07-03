@@ -1,5 +1,5 @@
 {
-  "name": "AGORA-SDH-GATE",
+  "name": "agora-fragment-js",
   "version": "0.0.1",
   "description": "get JSON from gp using AGORA SDH",
   "license": "Apache-2.0",
