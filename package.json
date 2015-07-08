@@ -1,6 +1,6 @@
 {
   "name": "agora-fragment-js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "get JSON from gp using AGORA SDH",
   "author": {
     "name": "Carlos Blanco Vallejo",
