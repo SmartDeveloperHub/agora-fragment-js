@@ -16,7 +16,7 @@
     "url": "https://github.com/SmartDeveloperHub/agora-fragment-js/issues",
     "email": "carlos.blanco@centeropenmiddleware.com"
   },
-  "main": "index.js",
+  "main": "SDHGate.js",
   "dependencies": {
     "rdfstore": "*",
     "sparqljs": "^1.1.2",
