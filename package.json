@@ -2,13 +2,18 @@
   "name": "agora-fragment-js",
   "version": "0.0.1",
   "description": "get JSON from gp using AGORA SDH",
+  "author": {
+    "name": "Carlos Blanco Vallejo",
+    "email": "carlos.blanco@centeropenmiddleware.com",
+    "url": "https://github.com/cblanco"
+  },
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SmartDeveloperHub/sdh-gate.git"
+    "url": "https://github.com/SmartDeveloperHub/agora-fragment-js"
   },
   "bugs": {
-    "url": "https://github.com/SmartDeveloperHub/sdh-gate/issues",
+    "url": "https://github.com/SmartDeveloperHub/agora-fragment-js/issues",
     "email": "carlos.blanco@centeropenmiddleware.com"
   },
   "main": "index.js",
