@@ -27,31 +27,6 @@
  var rdfstore = require('rdfstore');
  // var sparql_parser = require('sparqljs').Parser;
 
- // Parse Information and send to Callback
- var parseTree = function parseTree (e, returnCallback) {
-     if (e.status === 'OK') {
-         var r = e.results;
-         var re = {};
-         for (var i = 0; i < r.length; i++) {
-             if(typeof re[r[i].s.value] === 'undefined') {
-                 re[r[i].s.value] = [];
-             }
-             else{
-                 var v = {};
-                 v[r[i].p.value] = r[i].o.value;
-                 re[r[i].s.value].push(v);
-             }
-         }
-         returnCallback({
-             "status": "OK",
-             "results": re
-         });
-     }
-     else {
-         returnCallback(e);
-     }
- };
-
  var generate_error = function generate_error (c) {
      return {
          "status": "ERROR",
@@ -173,9 +148,4 @@ exports.get_results_from_fragment = function get_results_from_fragment(fg, q, ca
      }
  };*/
 
-exports.get_parsed_result = function get_parsed_result(f,q,retCall) {
-    this.get_results_from_fragment(f, q, function(e) {
-        parseTree(e, retCall);
-    });
-};
 
