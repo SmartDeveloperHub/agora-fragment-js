@@ -1,7 +1,7 @@
 {
   "debug": 1,
   "headers": {
-    "Accept": "text/turtle"
+    "Accept": "text/n3"
   },
   "services": {
     "planner": {
