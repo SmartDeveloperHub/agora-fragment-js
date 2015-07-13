@@ -1,24 +1,24 @@
-
 /*
-     #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
-     This file is part of the Smart Developer Hub Project:
-     http://www.smartdeveloperhub.org/
-     Center for Open Middleware
-     http://www.centeropenmiddleware.com/
-     #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
-     Copyright (C) 2015 Center for Open Middleware.
-     #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-     http://www.apache.org/licenses/LICENSE-2.0
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
+
+    #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
+      This file is part of the Smart Developer Hub Project:
+        http://www.smartdeveloperhub.org/
+      Center for Open Middleware
+            http://www.centeropenmiddleware.com/
+    #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
+      Copyright (C) 2015 Center for Open Middleware.
+    #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+                http://www.apache.org/licenses/LICENSE-2.0
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
      limitations under the License.
-     #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
- */
+    #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
+*/
 
 'use strict';
 
@@ -48,7 +48,7 @@ exports.get_fragment = function get_fragment (gp) {
         }
     }
     else {
-        return generate_error("Agora Fragment");
+        throw new Error("(get_fragment) gp param error");
     }
     http_path += encodeURIComponent(gpe) + '}';
     try {
@@ -62,11 +62,11 @@ exports.get_fragment = function get_fragment (gp) {
             };
         }
         else {
-            return generate_error("Agora Fragment");
+            throw new Error(req);
         }
     }
     catch (err) {
-        return generate_error("Agora Fragment");
+        throw new Error("(get_fragment) GET: " + http_path);
     }
 };
 
@@ -113,24 +113,30 @@ exports.get_fragment = function get_fragment (gp) {
 
 exports.get_results_from_fragment = function get_results_from_fragment(fg, q, callback) {
     rdfstore.create(function(err, store) {
-        store.load(config.headers.Accept, fg, function(err, results) {
-            if(err) {
-                callback(generate_error("SPARQL Query"));
-            }
-            else {
-                store.execute(q, function (err, results) {
-                    if (err) {
-                        callback(generate_error("SPARQL Query"));
-                    }
-                    else {
-                        callback({
-                            "status": "OK",
-                            "results": results
-                        });
-                    }
-                });
-            }
-        });
+        if(err) {
+            throw new Error("(get_results_from_fragment)create: " + err);
+        }
+        else {
+            // Cuando no hay conexión con la plataforma, este load peta sin poder ser capturado ni nada...
+            store.load(config.headers.Accept, fg, function (err, results) {
+                if (err) {
+                    throw new Error("(get_results_from_fragment)load: " + err);
+                }
+                else {
+                    store.execute(q, function (err, results) {
+                        if (err) {
+                            throw new Error("(get_results_from_fragment)execute: " + err);
+                        }
+                        else {
+                            callback({
+                                "status": "OK",
+                                "results": results
+                            });
+                        }
+                    });
+                }
+            });
+        }
     });
 };
 
