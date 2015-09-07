@@ -23,7 +23,8 @@
 'use strict';
 
 var config = require('./config.json');
-var request = require('sync-request');
+var request = require("request");
+var syncRequest = require('sync-request');
 var rdfstore = require('rdfstore');
 // var sparql_parser = require('sparqljs').Parser;
 
@@ -34,7 +35,7 @@ var generate_error = function generate_error (c) {
     };
 };
 
-exports.get_fragment = function get_fragment (gp) {
+exports.get_fragment = function get_fragment (gp, callback) {
     var http_path = config.services.fragmenter.url + ":" +
         config.services.fragmenter.port + config.services.fragmenter.path +
         config.services.fragmenter.query_param + '{';
@@ -52,18 +53,23 @@ exports.get_fragment = function get_fragment (gp) {
     }
     http_path += encodeURIComponent(gpe) + '}';
     try {
-        var req = request('GET', http_path, {
-            "headers": config.headers
+        request(http_path, function (error, response, body) {
+            if (error) {
+                // TODO
+                callback(error);
+            } else {
+                if (response.statusCode == 200) {
+                    var res = {
+                        "status": "OK",
+                        "fragment": body.toString('utf-8')
+                    };
+                    callback(res);
+                } else {
+                    // TODO
+                    callback(response.statusCode);
+                }
+            }
         });
-        if (req.statusCode === 200) {
-            return {
-                "status": "OK",
-                "fragment": req.getBody().toString('utf-8')
-            };
-        }
-        else {
-            throw new Error(req);
-        }
     }
     catch (err) {
         throw new Error("(get_fragment) GET: " + http_path);
@@ -117,7 +123,7 @@ exports.get_results_from_fragment = function get_results_from_fragment(fg, q, ca
             throw new Error("(get_results_from_fragment)create: " + err);
         }
         else {
-            // Cuando no hay conexión con la plataforma, este load peta sin poder ser capturado ni nada...
+            // Cuando no hay conexion con la plataforma, este load peta sin poder ser capturado ni nada...
             store.load(config.headers.Accept, fg, function (err, results) {
                 if (err) {
                     throw new Error("(get_results_from_fragment)load: " + err);
